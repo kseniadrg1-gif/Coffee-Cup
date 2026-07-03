@@ -1,0 +1,1552 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Coffee Cup · кофейня</title>
+    <link rel="stylesheet" href="responsive.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #0d0a08;
+        color: #e8ddd0;
+        font-family: "Georgia", serif;
+        overflow-x: hidden;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0d0a08;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #6b3e26;
+        border-radius: 3px;
+      }
+
+      .nav-link {
+        color: rgba(232, 221, 208, 0.75);
+        text-decoration: none;
+        font-family: "Trebuchet MS", sans-serif;
+        font-size: 14px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      .nav-link:hover {
+        color: #c8956a;
+      }
+
+      .btn-primary {
+        background: #c8956a;
+        color: #0d0a08;
+        border: none;
+        padding: 14px 36px;
+        font-family: "Trebuchet MS", sans-serif;
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+        border-radius: 2px;
+        font-weight: 700;
+      }
+      .btn-primary:hover {
+        background: #d4a882;
+        transform: scale(1.02);
+      }
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: #c8956a;
+        border: 1px solid #c8956a;
+        padding: 12px 32px;
+        font-family: "Trebuchet MS", sans-serif;
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s;
+        border-radius: 2px;
+      }
+      .btn-outline:hover {
+        background: rgba(200, 149, 106, 0.12);
+      }
+
+      .section-label {
+        font-family: "Trebuchet MS", sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: #c8956a;
+        margin-bottom: 12px;
+      }
+      .section-title {
+        font-size: clamp(28px, 4vw, 48px);
+        font-weight: 400;
+        line-height: 1.15;
+        color: #e8ddd0;
+        letter-spacing: -0.01em;
+      }
+      .divider {
+        width: 60px;
+        height: 1px;
+        background: #c8956a;
+        margin: 20px 0;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(200, 149, 106, 0.2);
+        border-radius: 4px;
+        padding: 28px;
+        transition:
+          border-color 0.3s,
+          background 0.3s;
+      }
+      .card:hover {
+        border-color: rgba(200, 149, 106, 0.5);
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .fade-up {
+        opacity: 0;
+        transform: translateY(32px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+      .fade-up.in-view {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+      .menu-category {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(200, 149, 106, 0.15);
+        border-radius: 4px;
+        padding: 20px 18px;
+      }
+      .menu-category h3 {
+        font-size: 14px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #c8956a;
+        border-bottom: 1px solid rgba(200, 149, 106, 0.2);
+        padding-bottom: 8px;
+        margin-bottom: 12px;
+        font-family: "Trebuchet MS", sans-serif;
+      }
+      .menu-item {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        padding: 6px 0;
+        color: rgba(232, 221, 208, 0.8);
+        border-bottom: 1px dashed rgba(200, 149, 106, 0.08);
+      }
+      .menu-item span:last-child {
+        color: #c8956a;
+        font-weight: 400;
+      }
+
+      .promo-block {
+        background: rgba(200, 149, 106, 0.08);
+        border: 1px solid #c8956a;
+        border-radius: 4px;
+        padding: 30px 24px;
+        text-align: center;
+      }
+
+      /* Стили для формы */
+      .form-input {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(232, 221, 208, 0.3);
+        color: #e8ddd0;
+        padding: 10px 0;
+        width: 100%;
+        font-family: "Georgia", serif;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .form-input:focus {
+        border-bottom-color: #c8956a;
+      }
+      .form-input::placeholder {
+        color: rgba(232, 221, 208, 0.4);
+      }
+
+      .social-toggle-btn {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: #e8ddd0;
+        cursor: pointer;
+        font-family: "Trebuchet MS", sans-serif;
+        font-size: 12px;
+        letter-spacing: 0.05em;
+        position: relative;
+        z-index: 1;
+        transition: color 0.3s;
+        padding: 0 4px;
+      }
+      .social-toggle-btn.active {
+        color: #c8956a;
+      }
+      .social-toggle-btn:hover {
+        color: #c8956a;
+      }
+
+      .checkbox-custom {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(200, 149, 106, 0.5);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+      .checkbox-custom.checked {
+        border-color: #c8956a;
+        background: rgba(200, 149, 106, 0.15);
+      }
+      .checkbox-custom .checkmark {
+        display: none;
+        color: #c8956a;
+        font-size: 14px;
+      }
+      .checkbox-custom.checked .checkmark {
+        display: block;
+      }
+
+      #formStatus {
+        margin-top: 16px;
+        text-align: center;
+        font-size: 14px;
+        min-height: 24px;
+        transition: all 0.3s;
+      }
+      #formStatus.success {
+        color: #2ecc71;
+      }
+      #formStatus.error {
+        color: #e74c3c;
+      }
+      #formStatus.loading {
+        color: #c8956a;
+      }
+
+      @media (max-width: 768px) {
+        .desktop-nav {
+          display: none !important;
+        }
+        .mobile-menu-btn {
+          display: block !important;
+        }
+      }
+      @media (min-width: 769px) {
+        .mobile-menu-btn {
+          display: none !important;
+        }
+        .mobile-nav {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 5%;
+        background: linear-gradient(
+          to bottom,
+          rgba(13, 10, 8, 0.95),
+          transparent
+        );
+        backdrop-filter: blur(2px);
+      "
+    >
+      <div
+        style="
+          font-family: &quot;Trebuchet MS&quot;, sans-serif;
+          font-size: 13px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #c8956a;
+          font-weight: 700;
+        "
+      >
+        ◆ Coffee Cup
+      </div>
+      <div class="desktop-nav" style="display: flex; gap: 36px">
+        <span class="nav-link" onclick="scrollToSection('about')">О нас</span>
+        <span class="nav-link" onclick="scrollToSection('menu')">Меню</span>
+        <span class="nav-link" onclick="scrollToSection('promo')">Акции</span>
+        <span class="nav-link" onclick="scrollToSection('contact')"
+          >Контакты</span
+        >
+      </div>
+      <button
+        class="btn-primary desktop-nav"
+        style="padding: 10px 24px; font-size: 12px"
+        onclick="scrollToSection('contact')"
+      >
+        Забронировать
+      </button>
+      <button
+        class="mobile-menu-btn"
+        onclick="toggleMobileMenu()"
+        style="
+          background: none;
+          border: none;
+          color: #e8ddd0;
+          font-size: 22px;
+          cursor: pointer;
+        "
+      >
+        ☰
+      </button>
+    </nav>
+
+    <!-- mobile nav -->
+    <div
+      id="mobileNav"
+      class="mobile-nav"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 99;
+        background: #0d0a08;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+      "
+    >
+      <span
+        class="nav-link"
+        style="font-size: 18px"
+        onclick="
+          closeMobileNav();
+          scrollToSection('about');
+        "
+        >О нас</span
+      >
+      <span
+        class="nav-link"
+        style="font-size: 18px"
+        onclick="
+          closeMobileNav();
+          scrollToSection('menu');
+        "
+        >Меню</span
+      >
+      <span
+        class="nav-link"
+        style="font-size: 18px"
+        onclick="
+          closeMobileNav();
+          scrollToSection('promo');
+        "
+        >Акции</span
+      >
+      <span
+        class="nav-link"
+        style="font-size: 18px"
+        onclick="
+          closeMobileNav();
+          scrollToSection('contact');
+        "
+        >Контакты</span
+      >
+      <button
+        class="btn-primary"
+        onclick="
+          closeMobileNav();
+          scrollToSection('contact');
+        "
+      >
+        Забронировать
+      </button>
+    </div>
+
+    <!-- HERO -->
+    <section
+      id="about"
+      style="
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 0 5% 80px;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          background: radial-gradient(
+            ellipse at 70% 40%,
+            #3d1f0a 0%,
+            #1a0d05 40%,
+            #0d0a08 100%
+          );
+        "
+      ></div>
+      <div
+        style="
+          position: absolute;
+          top: 15%;
+          right: 8%;
+          width: 320px;
+          height: 320px;
+          border-radius: 50%;
+          border: 1px solid rgba(200, 149, 106, 0.15);
+          z-index: 1;
+        "
+      ></div>
+      <div
+        style="
+          position: absolute;
+          top: 12%;
+          right: 5.5%;
+          width: 440px;
+          height: 440px;
+          border-radius: 50%;
+          border: 1px solid rgba(200, 149, 106, 0.07);
+          z-index: 1;
+        "
+      ></div>
+      <div style="position: relative; z-index: 2">
+        <p class="section-label" style="margin-bottom: 24px">
+          Самара · ул. Баженова, 7
+        </p>
+        <h1
+          style="
+            font-family: &quot;Georgia&quot;, serif;
+            font-size: clamp(56px, 12vw, 130px);
+            font-weight: 400;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            color: #e8ddd0;
+            margin-bottom: 32px;
+          "
+        >
+          Coffee Cup<br /><span style="color: #c8956a">кофейня</span>
+        </h1>
+        <p
+          style="
+            font-size: 16px;
+            color: rgba(232, 221, 208, 0.65);
+            max-width: 480px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+          "
+        >
+          Уютное место в центре Самары. Свежая обжарка, авторские напитки и
+          домашняя выпечка. Приходите за кофе и настроением.
+        </p>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap">
+          <button class="btn-primary" onclick="scrollToSection('menu')">
+            Наше меню
+          </button>
+          <button class="btn-outline" onclick="scrollToSection('contact')">
+            Контакты
+          </button>
+        </div>
+      </div>
+      <div
+        style="
+          position: relative;
+          z-index: 2;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 1px;
+          margin-top: 64px;
+          border: 1px solid rgba(200, 149, 106, 0.2);
+          border-radius: 4px;
+          overflow: hidden;
+        "
+      >
+        <div style="padding: 20px 24px; background: rgba(255, 255, 255, 0.04)">
+          <p
+            style="
+              font-size: clamp(20px, 3vw, 26px);
+              font-weight: 400;
+              color: #c8956a;
+            "
+          >
+            08:30
+          </p>
+          <p
+            style="
+              font-size: 12px;
+              color: rgba(232, 221, 208, 0.5);
+              font-family: &quot;Trebuchet MS&quot;, sans-serif;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              margin-top: 4px;
+            "
+          >
+            открытие
+          </p>
+        </div>
+        <div
+          style="
+            padding: 20px 24px;
+            background: rgba(255, 255, 255, 0.04);
+            border-left: 1px solid rgba(200, 149, 106, 0.15);
+          "
+        >
+          <p
+            style="
+              font-size: clamp(20px, 3vw, 26px);
+              font-weight: 400;
+              color: #c8956a;
+            "
+          >
+            21:00
+          </p>
+          <p
+            style="
+              font-size: 12px;
+              color: rgba(232, 221, 208, 0.5);
+              font-family: &quot;Trebuchet MS&quot;, sans-serif;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              margin-top: 4px;
+            "
+          >
+            закрытие
+          </p>
+        </div>
+        <div
+          style="
+            padding: 20px 24px;
+            background: rgba(255, 255, 255, 0.04);
+            border-left: 1px solid rgba(200, 149, 106, 0.15);
+          "
+        >
+          <p
+            style="
+              font-size: clamp(20px, 3vw, 26px);
+              font-weight: 400;
+              color: #c8956a;
+            "
+          >
+            ср
+          </p>
+          <p
+            style="
+              font-size: 12px;
+              color: rgba(232, 221, 208, 0.5);
+              font-family: &quot;Trebuchet MS&quot;, sans-serif;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              margin-top: 4px;
+            "
+          >
+            пицца + кофе 299₽
+          </p>
+        </div>
+        <div
+          style="
+            padding: 20px 24px;
+            background: rgba(255, 255, 255, 0.04);
+            border-left: 1px solid rgba(200, 149, 106, 0.15);
+          "
+        >
+          <p
+            style="
+              font-size: clamp(20px, 3vw, 26px);
+              font-weight: 400;
+              color: #c8956a;
+            "
+          >
+            4.9
+          </p>
+          <p
+            style="
+              font-size: 12px;
+              color: rgba(232, 221, 208, 0.5);
+              font-family: &quot;Trebuchet MS&quot;, sans-serif;
+              letter-spacing: 0.1em;
+              text-transform: uppercase;
+              margin-top: 4px;
+            "
+          >
+            рейтинг
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SHORT -->
+    <section style="padding: 80px 5%; max-width: 1200px; margin: 0 auto">
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 60px;
+          align-items: center;
+        "
+      >
+        <div class="fade-up">
+          <p class="section-label">Наша философия</p>
+          <h2 class="section-title">
+            Кофе, который <br /><em style="color: #c8956a">объединяет</em>
+          </h2>
+          <div class="divider"></div>
+          <p
+            style="
+              font-size: 16px;
+              line-height: 1.85;
+              color: rgba(232, 221, 208, 0.7);
+              margin-bottom: 20px;
+            "
+          >
+            Мы обжариваем зёрна с душой, варим напитки с вниманием к деталям и
+            создаём пространство, где каждый чувствует себя как дома.
+          </p>
+          <p
+            style="
+              font-size: 16px;
+              line-height: 1.85;
+              color: rgba(232, 221, 208, 0.7);
+            "
+          >
+            <span style="color: #c8956a">Coffee Cup</span> — это место встречи
+            друзей, вкусного завтрака и идеального эспрессо.
+          </p>
+        </div>
+        <div
+          class="fade-up"
+          style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px"
+        >
+          <div
+            style="
+              padding: 32px 24px;
+              border: 1px solid rgba(200, 149, 106, 0.2);
+              border-radius: 4px;
+              text-align: center;
+            "
+          >
+            <p
+              style="
+                font-size: clamp(28px, 4vw, 40px);
+                color: #c8956a;
+                font-weight: 400;
+              "
+            >
+              2021
+            </p>
+            <p
+              style="
+                font-size: 12px;
+                color: rgba(232, 221, 208, 0.5);
+                font-family: &quot;Trebuchet MS&quot;, sans-serif;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                margin-top: 6px;
+              "
+            >
+              открытие
+            </p>
+          </div>
+          <div
+            style="
+              padding: 32px 24px;
+              border: 1px solid rgba(200, 149, 106, 0.2);
+              border-radius: 4px;
+              text-align: center;
+            "
+          >
+            <p
+              style="
+                font-size: clamp(28px, 4vw, 40px);
+                color: #c8956a;
+                font-weight: 400;
+              "
+            >
+              15+
+            </p>
+            <p
+              style="
+                font-size: 12px;
+                color: rgba(232, 221, 208, 0.5);
+                font-family: &quot;Trebuchet MS&quot;, sans-serif;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                margin-top: 6px;
+              "
+            >
+              сортов кофе
+            </p>
+          </div>
+          <div
+            style="
+              padding: 32px 24px;
+              border: 1px solid rgba(200, 149, 106, 0.2);
+              border-radius: 4px;
+              text-align: center;
+            "
+          >
+            <p
+              style="
+                font-size: clamp(28px, 4vw, 40px);
+                color: #c8956a;
+                font-weight: 400;
+              "
+            >
+              100%
+            </p>
+            <p
+              style="
+                font-size: 12px;
+                color: rgba(232, 221, 208, 0.5);
+                font-family: &quot;Trebuchet MS&quot;, sans-serif;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                margin-top: 6px;
+              "
+            >
+              арабика
+            </p>
+          </div>
+          <div
+            style="
+              padding: 32px 24px;
+              border: 1px solid rgba(200, 149, 106, 0.2);
+              border-radius: 4px;
+              text-align: center;
+            "
+          >
+            <p
+              style="
+                font-size: clamp(28px, 4vw, 40px);
+                color: #c8956a;
+                font-weight: 400;
+              "
+            >
+              🔥
+            </p>
+            <p
+              style="
+                font-size: 12px;
+                color: rgba(232, 221, 208, 0.5);
+                font-family: &quot;Trebuchet MS&quot;, sans-serif;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                margin-top: 6px;
+              "
+            >
+              домашняя обжарка
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENU -->
+    <section
+      id="menu"
+      style="padding: 80px 5%; background: rgba(255, 255, 255, 0.02)"
+    >
+      <div style="max-width: 1200px; margin: 0 auto">
+        <div class="fade-up">
+          <p class="section-label">Напитки и еда</p>
+          <h2 class="section-title">Наше меню</h2>
+          <div class="divider"></div>
+        </div>
+
+        <div class="menu-grid" style="margin-top: 40px">
+          <div class="menu-category fade-up">
+            <h3>Классика кофе</h3>
+            <div class="menu-item"><span>Эспрессо</span><span>149</span></div>
+            <div class="menu-item"><span>Американо</span><span>175</span></div>
+            <div class="menu-item">
+              <span>Капчино</span><span>219 / 275</span>
+            </div>
+            <div class="menu-item">
+              <span>Латте</span><span>219 / 275</span>
+            </div>
+            <div class="menu-item"><span>Флэт-уайт</span><span>259</span></div>
+            <div class="menu-item">
+              <span>Какао</span><span>199 / 230</span>
+            </div>
+          </div>
+          <div class="menu-category fade-up">
+            <h3>Чай</h3>
+            <div class="menu-item">
+              <span>Ассам</span><span>210 / 230</span>
+            </div>
+            <div class="menu-item">
+              <span>Тасконьй</span><span>210 / 230</span>
+            </div>
+            <div class="menu-item">
+              <span>Лесные ягоды</span><span>210 / 230</span>
+            </div>
+            <div class="menu-item">
+              <span>Малина с мятой</span><span>210 / 230</span>
+            </div>
+            <div class="menu-item">
+              <span>Иван-чай смородина</span><span>210 / 230</span>
+            </div>
+            <div class="menu-item">
+              <span>Жасмин</span><span>210 / 230</span>
+            </div>
+            <div class="menu-item">
+              <span>Молочный улун</span><span>210 / 230</span>
+            </div>
+          </div>
+          <div class="menu-category fade-up">
+            <h3>Авторские</h3>
+            <div class="menu-item">
+              <span>Раф-азипо</span><span>259 / 310</span>
+            </div>
+            <div class="menu-item">
+              <span>Сникерс-кофе</span><span>259 / 299</span>
+            </div>
+            <div
+              style="
+                margin-top: 12px;
+                border-top: 1px solid rgba(200, 149, 106, 0.2);
+                padding-top: 12px;
+              "
+            >
+              <div class="menu-item">
+                <span>Сироп (ассорти)</span><span>59</span>
+              </div>
+              <div class="menu-item">
+                <span>Альтернативное молоко</span><span>87</span>
+              </div>
+            </div>
+          </div>
+          <div class="menu-category fade-up">
+            <h3>Выпечка & завтраки</h3>
+            <div class="menu-item"><span>Круассан</span><span>130</span></div>
+            <div class="menu-item"><span>Сырник</span><span>160</span></div>
+            <div class="menu-item">
+              <span>Сэндвич с курицей</span><span>190</span>
+            </div>
+            <div class="menu-item"><span>Чизкейк</span><span>220</span></div>
+            <div class="menu-item">
+              <span>Пицца (ср)</span><span>+ кофе 299</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            margin-top: 24px;
+            font-size: 13px;
+            color: rgba(232, 221, 208, 0.4);
+            text-align: center;
+            letter-spacing: 0.05em;
+            border-top: 1px solid rgba(200, 149, 106, 0.1);
+            padding-top: 20px;
+          "
+        >
+          Объём 250 / 350 мл · все цены в рублях
+        </div>
+      </div>
+    </section>
+
+    <!-- PROMO -->
+    <section id="promo" style="padding: 80px 5%">
+      <div style="max-width: 900px; margin: 0 auto">
+        <div class="fade-up" style="text-align: center">
+          <p class="section-label">Спецпредложение</p>
+          <h2 class="section-title">
+            Акция <span style="color: #c8956a">каждую среду</span>
+          </h2>
+          <div class="divider" style="margin: 20px auto"></div>
+        </div>
+        <div class="promo-block fade-up" style="margin-top: 30px">
+          <div
+            style="
+              font-size: clamp(32px, 5vw, 56px);
+              font-weight: 400;
+              color: #e8ddd0;
+              letter-spacing: 0.02em;
+            "
+          >
+            🍕 <span style="color: #c8956a">Пицца</span> +
+            <span style="color: #c8956a">Кофе</span>
+          </div>
+          <div
+            style="
+              font-size: clamp(40px, 6vw, 72px);
+              color: #c8956a;
+              font-weight: 400;
+              margin: 12px 0;
+            "
+          >
+            299 ₽
+          </div>
+          <p style="font-size: 15px; color: rgba(232, 221, 208, 0.6)">
+            Каждую среду! Любая пицца + любой кофе в подарок
+          </p>
+          <button
+            class="btn-primary"
+            style="margin-top: 24px"
+            onclick="scrollToSection('contact')"
+          >
+            Прийти в среду
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT + ФОРМА БРОНИРОВАНИЯ -->
+    <section
+      id="contact"
+      style="
+        padding: 80px 5%;
+        background: radial-gradient(
+          ellipse at 30% 60%,
+          #3d1f0a 0%,
+          #0d0a08 70%
+        );
+        position: relative;
+        overflow: hidden;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          top: 10%;
+          right: 5%;
+          width: 400px;
+          height: 400px;
+          border-radius: 50%;
+          border: 1px solid rgba(200, 149, 106, 0.1);
+        "
+      ></div>
+      <div
+        style="
+          position: absolute;
+          top: 5%;
+          right: 1%;
+          width: 560px;
+          height: 560px;
+          border-radius: 50%;
+          border: 1px solid rgba(200, 149, 106, 0.05);
+        "
+      ></div>
+      <div
+        style="
+          max-width: 1100px;
+          margin: 0 auto;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 60px;
+          position: relative;
+          z-index: 1;
+        "
+      >
+        <!-- Контакты -->
+        <div class="fade-up">
+          <p class="section-label">Контакты</p>
+          <h2 class="section-title">
+            Приходите <br /><em style="color: #c8956a">к нам</em>
+          </h2>
+          <div class="divider"></div>
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 16px;
+              margin-top: 20px;
+            "
+          >
+            <p style="font-size: 15px; color: rgba(232, 221, 208, 0.7)">
+              <span style="color: #c8956a">📍</span> ул. Николая Баженова, 7,
+              Самара
+            </p>
+            <p style="font-size: 15px; color: rgba(232, 221, 208, 0.7)">
+              <span style="color: #c8956a">📞</span>
+              <a
+                href="tel:+79171472206"
+                style="
+                  color: #e8ddd0;
+                  text-decoration: none;
+                  border-bottom: 1px dotted rgba(200, 149, 106, 0.3);
+                "
+                >+7 (917) 147-22-06</a
+              >
+            </p>
+            <p style="font-size: 15px; color: rgba(232, 221, 208, 0.7)">
+              <span style="color: #c8956a">🕒</span> пн–пт 08:30–21:00 · сб–вс
+              10:00–21:00
+            </p>
+            <p style="font-size: 15px; color: rgba(232, 221, 208, 0.7)">
+              <span style="color: #c8956a">🌐</span>
+              <a
+                href="https://vk.com/coffeecup_samara"
+                target="_blank"
+                style="
+                  color: #e8ddd0;
+                  text-decoration: none;
+                  border-bottom: 1px dotted rgba(200, 149, 106, 0.3);
+                "
+                >ВКонтакте</a
+              >
+            </p>
+          </div>
+          <div
+            style="
+              margin-top: 28px;
+              padding: 16px 20px;
+              border: 1px solid rgba(200, 149, 106, 0.2);
+              border-radius: 4px;
+              background: rgba(255, 255, 255, 0.03);
+            "
+          >
+            <p
+              style="
+                font-size: 13px;
+                color: rgba(232, 221, 208, 0.5);
+                font-family: &quot;Trebuchet MS&quot;, sans-serif;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+              "
+            >
+              График работы
+            </p>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4px 20px;
+                margin-top: 10px;
+                font-size: 14px;
+                color: rgba(232, 221, 208, 0.7);
+              "
+            >
+              <span>Пн–Пт</span><span>08:30 – 21:00</span> <span>Сб–Вс</span
+              ><span>10:00 – 21:00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ФОРМА БРОНИРОВАНИЯ -->
+        <div class="fade-up">
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.03);
+              border: 1px solid rgba(200, 149, 106, 0.15);
+              border-radius: 4px;
+              padding: 30px 24px;
+            "
+          >
+            <p
+              style="
+                font-size: 13px;
+                color: rgba(232, 221, 208, 0.5);
+                font-family: &quot;Trebuchet MS&quot;, sans-serif;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                margin-bottom: 20px;
+              "
+            >
+              Бронирование столика
+            </p>
+
+            <form id="bookingForm">
+              <!-- Имя -->
+              <div style="margin-bottom: 20px">
+                <input
+                  type="text"
+                  id="formName"
+                  class="form-input"
+                  placeholder="Ваше имя"
+                  required
+                />
+              </div>
+
+              <!-- Телефон -->
+              <div style="margin-bottom: 20px">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    border-bottom: 1px solid rgba(232, 221, 208, 0.3);
+                  "
+                >
+                  <span
+                    style="
+                      color: #c8956a;
+                      padding-right: 8px;
+                      font-size: 15px;
+                      font-weight: 700;
+                    "
+                    >+7</span
+                  >
+                  <input
+                    type="tel"
+                    id="formPhone"
+                    class="form-input"
+                    placeholder="(999) 999-99-99"
+                    style="border-bottom: none"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Соц. сеть для связи -->
+              <div style="margin-bottom: 20px">
+                <p
+                  style="
+                    font-size: 13px;
+                    color: rgba(232, 221, 208, 0.5);
+                    font-family: &quot;Trebuchet MS&quot;, sans-serif;
+                    letter-spacing: 0.05em;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Выберите соц. сеть для связи:
+                </p>
+                <div
+                  id="socialToggle"
+                  style="
+                    display: flex;
+                    background: rgba(255, 255, 255, 0.05);
+                    border-radius: 4px;
+                    overflow: hidden;
+                    border: 1px solid rgba(200, 149, 106, 0.2);
+                    position: relative;
+                    height: 40px;
+                  "
+                >
+                  <div
+                    id="sliderBg"
+                    style="
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      height: 100%;
+                      width: 33.33%;
+                      background: rgba(200, 149, 106, 0.2);
+                      transition: transform 0.3s ease;
+                      border-radius: 4px;
+                    "
+                  ></div>
+                  <button
+                    type="button"
+                    class="social-toggle-btn active"
+                    data-value="telegram"
+                    onclick="selectSocial('telegram')"
+                  >
+                    Telegram
+                  </button>
+                  <button
+                    type="button"
+                    class="social-toggle-btn"
+                    data-value="whatsapp"
+                    onclick="selectSocial('whatsapp')"
+                  >
+                    WhatsApp
+                  </button>
+                  <button
+                    type="button"
+                    class="social-toggle-btn"
+                    data-value="vk"
+                    onclick="selectSocial('vk')"
+                  >
+                    ВКонтакте
+                  </button>
+                </div>
+              </div>
+
+              <!-- Чекбокс "Позвонить мне" -->
+              <div
+                style="
+                  margin-bottom: 24px;
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                  cursor: pointer;
+                "
+                onclick="toggleCheckbox()"
+              >
+                <div id="customCheckbox" class="checkbox-custom checked">
+                  <span class="checkmark">✓</span>
+                </div>
+                <label
+                  style="
+                    font-size: 14px;
+                    color: rgba(232, 221, 208, 0.7);
+                    cursor: pointer;
+                  "
+                  >Позвонить мне</label
+                >
+                <input
+                  type="checkbox"
+                  id="callMe"
+                  checked
+                  style="display: none"
+                />
+              </div>
+
+              <!-- Кнопка отправки -->
+              <button
+                type="button"
+                id="submitBtn"
+                class="btn-primary"
+                style="width: 100%"
+                onclick="handleSubmit()"
+              >
+                Отправить бронь
+              </button>
+
+              <div id="formStatus"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer
+      style="
+        padding: 30px 5%;
+        border-top: 1px solid rgba(200, 149, 106, 0.15);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      "
+    >
+      <p
+        style="
+          font-family: &quot;Trebuchet MS&quot;, sans-serif;
+          font-size: 13px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #c8956a;
+          font-weight: 700;
+        "
+      >
+        ◆ Coffee Cup
+      </p>
+      <div style="display: flex; gap: 24px; flex-wrap: wrap">
+        <span
+          class="nav-link"
+          style="font-size: 11px"
+          onclick="scrollToSection('about')"
+          >О нас</span
+        >
+        <span
+          class="nav-link"
+          style="font-size: 11px"
+          onclick="scrollToSection('menu')"
+          >Меню</span
+        >
+        <span
+          class="nav-link"
+          style="font-size: 11px"
+          onclick="scrollToSection('promo')"
+          >Акции</span
+        >
+        <span
+          class="nav-link"
+          style="font-size: 11px"
+          onclick="scrollToSection('contact')"
+          >Контакты</span
+        >
+      </div>
+      <p
+        style="
+          font-size: 11px;
+          color: rgba(232, 221, 208, 0.3);
+          font-family: &quot;Trebuchet MS&quot;, sans-serif;
+        "
+      >
+        © 2026 Coffee Cup
+      </p>
+    </footer>
+
+    <script>
+      // ============================================================
+      // НАСТРОЙКИ TELEGRAM — МЕНЯЙТЕ ЗДЕСЬ!
+      // ============================================================
+      const TELEGRAM_BOT_TOKEN =
+        "8796350807:AAH8qK9gz8vR3avpBHFqm3-uWBPiK3vpCrU";
+      const TELEGRAM_CHAT_ID = "-1003992516249";
+
+      // ============================================================
+      // СОСТОЯНИЕ ФОРМЫ
+      // ============================================================
+      let formState = {
+        name: "",
+        phone: "+7",
+        social: "telegram",
+        callMe: true,
+      };
+      let selectedSocial = "telegram";
+
+      // ============================================================
+      // ИНИЦИАЛИЗАЦИЯ
+      // ============================================================
+      document.addEventListener("DOMContentLoaded", function () {
+        const phoneInput = document.getElementById("formPhone");
+        if (phoneInput) {
+          phoneInput.addEventListener("input", function (e) {
+            let value = this.value.replace(/\D/g, "");
+            if (value.length > 10) value = value.slice(0, 10);
+            this.value = value;
+            formState.phone = "+7" + value;
+          });
+        }
+
+        const nameInput = document.getElementById("formName");
+        if (nameInput) {
+          nameInput.addEventListener("input", function (e) {
+            formState.name = this.value;
+          });
+        }
+
+        selectSocial("telegram");
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) e.target.classList.add("in-view");
+            });
+          },
+          { threshold: 0.15 },
+        );
+        document
+          .querySelectorAll(".fade-up")
+          .forEach((el) => observer.observe(el));
+      });
+
+      // ============================================================
+      // ВЫБОР СОЦ. СЕТИ
+      // ============================================================
+      window.selectSocial = function (value) {
+        selectedSocial = value;
+        formState.social = value;
+
+        const slider = document.getElementById("sliderBg");
+        const buttons = document.querySelectorAll(".social-toggle-btn");
+
+        buttons.forEach((btn) => {
+          if (btn.dataset.value === value) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+
+        if (slider) {
+          const positions = { telegram: 0, whatsapp: 33.33, vk: 66.66 };
+          slider.style.transform = "translateX(" + positions[value] + "%)";
+        }
+      };
+
+      // ============================================================
+      // ЧЕКБОКС
+      // ============================================================
+      window.toggleCheckbox = function () {
+        const checkbox = document.getElementById("callMe");
+        const box = document.getElementById("customCheckbox");
+
+        formState.callMe = !formState.callMe;
+        checkbox.checked = formState.callMe;
+
+        if (formState.callMe) {
+          box.classList.add("checked");
+        } else {
+          box.classList.remove("checked");
+        }
+      };
+
+      // ============================================================
+      // ОТПРАВКА В TELEGRAM
+      // ============================================================
+      async function sendToTelegram(data) {
+        const message =
+          "📞 *Новая бронь столика!*" +
+          "\n\n" +
+          "👤 *Имя:* " +
+          data.name +
+          "\n" +
+          "📱 *Телефон:* " +
+          data.phone +
+          "\n" +
+          "💬 *Связь:* " +
+          (data.social === "telegram"
+            ? "Telegram"
+            : data.social === "whatsapp"
+              ? "WhatsApp"
+              : "ВКонтакте") +
+          "\n" +
+          "📲 *Позвонить:* " +
+          (data.callMe ? "Да" : "Нет") +
+          "\n\n" +
+          "⏰ *Время брони:* " +
+          new Date().toLocaleString("ru-RU");
+
+        const response = await fetch(
+          "https://api.telegram.org/bot" + TELEGRAM_BOT_TOKEN + "/sendMessage",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: TELEGRAM_CHAT_ID,
+              text: message,
+              parse_mode: "Markdown",
+            }),
+          },
+        );
+
+        return response.json();
+      }
+
+      // ============================================================
+      // ОБРАБОТЧИК ФОРМЫ
+      // ============================================================
+      window.handleSubmit = async function () {
+        const name = document.getElementById("formName").value.trim();
+        const phoneRaw = document.getElementById("formPhone").value.trim();
+        const phone = "+7" + phoneRaw.replace(/\D/g, "");
+
+        if (!name) {
+          showStatus("❌ Пожалуйста, укажите ваше имя", "error");
+          return;
+        }
+
+        const phoneDigits = phone.replace(/\D/g, "");
+        if (phoneDigits.length < 11) {
+          showStatus("❌ Пожалуйста, введите полный номер телефона", "error");
+          return;
+        }
+
+        const data = {
+          name: name,
+          phone: phone,
+          social: selectedSocial,
+          callMe: formState.callMe,
+        };
+
+        const btn = document.getElementById("submitBtn");
+        btn.disabled = true;
+        btn.textContent = "Отправка...";
+        showStatus("⏳ Отправка...", "loading");
+
+        try {
+          const result = await sendToTelegram(data);
+
+          if (result.ok) {
+            showStatus(
+              "✅ Бронь успешно отправлена! Мы свяжемся с вами.",
+              "success",
+            );
+
+            document.getElementById("formName").value = "";
+            document.getElementById("formPhone").value = "";
+            formState.name = "";
+            formState.phone = "+7";
+
+            window.selectSocial("telegram");
+
+            if (!formState.callMe) {
+              window.toggleCheckbox();
+            }
+          } else {
+            showStatus("❌ Ошибка отправки. Попробуйте позже.", "error");
+            console.error("Telegram error:", result);
+          }
+        } catch (error) {
+          showStatus("❌ Ошибка сети. Проверьте подключение.", "error");
+          console.error("Error:", error);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Отправить бронь";
+        }
+      };
+
+      // ============================================================
+      // СТАТУС ФОРМЫ
+      // ============================================================
+      function showStatus(message, type) {
+        const statusEl = document.getElementById("formStatus");
+        if (!statusEl) return;
+
+        statusEl.textContent = message;
+        statusEl.className = type;
+
+        if (type === "success" || type === "error") {
+          setTimeout(() => {
+            if (statusEl.textContent === message) {
+              statusEl.textContent = "";
+              statusEl.className = "";
+            }
+          }, 5000);
+        }
+      }
+
+      // ============================================================
+      // НАВИГАЦИЯ
+      // ============================================================
+      window.scrollToSection = function (id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      };
+
+      window.toggleMobileMenu = function () {
+        const nav = document.getElementById("mobileNav");
+        nav.style.display = nav.style.display === "flex" ? "none" : "flex";
+      };
+
+      window.closeMobileNav = function () {
+        document.getElementById("mobileNav").style.display = "none";
+      };
+
+      window.submitForm = function () {
+        window.handleSubmit();
+      };
+    </script>
+  </body>
+</html>
